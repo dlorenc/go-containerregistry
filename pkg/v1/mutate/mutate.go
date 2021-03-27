@@ -120,6 +120,22 @@ func ConfigFile(base v1.Image, cfg *v1.ConfigFile) (v1.Image, error) {
 	return image, nil
 }
 
+func Reference(base v1.Image, a Appendable) (v1.Image, error) {
+	m, err := base.Manifest()
+	if err != nil {
+		return nil, err
+	}
+
+	image := &image{
+		base:      base,
+		manifest:  m.DeepCopy(),
+		reference: a,
+	}
+
+	return image, nil
+
+}
+
 // CreatedAt mutates the provided v1.Image to have the provided v1.Time
 func CreatedAt(base v1.Image, created v1.Time) (v1.Image, error) {
 	cf, err := base.ConfigFile()

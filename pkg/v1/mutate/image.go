@@ -27,8 +27,9 @@ import (
 )
 
 type image struct {
-	base v1.Image
-	adds []Addendum
+	base      v1.Image
+	adds      []Addendum
+	reference Appendable
 
 	computed   bool
 	configFile *v1.ConfigFile
@@ -111,6 +112,14 @@ func (i *image) compute() error {
 
 		manifestLayers = append(manifestLayers, *desc)
 		digestMap[desc.Digest] = add.Layer
+	}
+
+	if i.reference != nil {
+		r, err := partial.Descriptor(i.reference)
+		if err != nil {
+			return err
+		}
+		manifest.Reference = r
 	}
 
 	configFile.RootFS.DiffIDs = diffIDs

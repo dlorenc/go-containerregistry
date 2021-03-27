@@ -27,6 +27,7 @@ type Manifest struct {
 	MediaType     types.MediaType   `json:"mediaType"`
 	Config        Descriptor        `json:"config"`
 	Layers        []Descriptor      `json:"layers"`
+	Reference     *Descriptor       `json:"reference,omitempty"`
 	Annotations   map[string]string `json:"annotations,omitempty"`
 }
 
