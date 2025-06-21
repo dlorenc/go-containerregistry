@@ -161,3 +161,15 @@ func WithDiskDeduplication(dir string) Option {
 		r.blobs.blobHandler = h
 	}
 }
+
+// WithStreamingBlobs enables streaming blob storage with automatic routing to disk for large blobs
+func WithStreamingBlobs(dir string, memThreshold int64) Option {
+	return func(r *registry) {
+		h, err := NewStreamingBlobHandler(dir, memThreshold)
+		if err != nil {
+			r.log.Printf("Failed to create streaming blob handler: %v", err)
+			return
+		}
+		r.blobs.blobHandler = h
+	}
+}
