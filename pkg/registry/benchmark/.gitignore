@@ -1,0 +1,7 @@
+# Benchmark results
+benchmark_results/
+*.json
+
+# Temporary directories
+tmp/
+temp/
