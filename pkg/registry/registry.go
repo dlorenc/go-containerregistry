@@ -142,3 +142,22 @@ func WithBlobHandler(h BlobHandler) Option {
 		r.blobs.blobHandler = h
 	}
 }
+
+// WithDeduplication enables blob deduplication with reference counting
+func WithDeduplication() Option {
+	return func(r *registry) {
+		r.blobs.blobHandler = NewDedupBlobHandler()
+	}
+}
+
+// WithDiskDeduplication enables disk-based blob deduplication
+func WithDiskDeduplication(dir string) Option {
+	return func(r *registry) {
+		h, err := NewDedupDiskHandler(dir)
+		if err != nil {
+			r.log.Printf("Failed to create disk dedup handler: %v", err)
+			return
+		}
+		r.blobs.blobHandler = h
+	}
+}
